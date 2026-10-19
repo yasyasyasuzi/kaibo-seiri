@@ -57,7 +57,9 @@ h1 .bulb{width:22px;height:22px;margin-top:-4px;flex:none}
 .tabs .wrap{display:flex}
 .tab{flex:1;height:46px;font-size:14px;font-weight:500;color:var(--sub);position:relative}
 .tab[aria-selected="true"]{color:var(--navy);font-weight:700}
-.tab[aria-selected="true"]::after{content:"";position:absolute;left:22%;right:22%;bottom:-1px;height:2.5px;border-radius:2px;background:var(--grad)}
+.tab::after{content:"";position:absolute;left:22%;right:22%;bottom:-1px;height:2.5px;border-radius:2px;background:var(--grad);transform:scaleX(0);transition:transform .4s var(--ease)}
+.tab[aria-selected="true"]::after{transform:scaleX(1)}
+.tab{transition:color .3s}
 .badge{display:inline-block;min-width:18px;height:18px;padding:0 5px;margin-left:3px;border-radius:9px;background:var(--or);color:#fff;font-size:11px;font-weight:700;line-height:18px;vertical-align:1px}
 .badge[hidden]{display:none}
 
@@ -72,11 +74,20 @@ h1 .bulb{width:22px;height:22px;margin-top:-4px;flex:none}
 .sw[aria-pressed="true"] i::after{transform:translateX(14px)}
 .chips{display:flex;gap:6px;overflow-x:auto;padding:0 16px 14px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
-.chip{flex:none;height:30px;padding:0 12px;border-radius:15px;border:1px solid var(--line);font-size:12.5px;color:var(--sub);white-space:nowrap}
+.chip{flex:none;transition:background .3s,color .3s,border-color .3s;height:30px;padding:0 12px;border-radius:15px;border:1px solid var(--line);font-size:12.5px;color:var(--sub);white-space:nowrap}
 .chip[aria-pressed="true"]{border-color:transparent;background:var(--grad);color:#fff;font-weight:700}
 
 /* bands */
-.band{display:flex;align-items:center;gap:10px;padding:9px 16px;background:var(--band);border-top:1px solid var(--bandline);border-bottom:1px solid var(--bandline)}
+.band{position:relative;display:flex;align-items:center;gap:10px;margin-top:22px;padding:11px 16px 11px 18px;background:var(--band);border-top:1px solid var(--bandline);border-bottom:1px solid var(--bandline)}
+.band::before{content:"";position:absolute;left:0;top:-1px;bottom:-1px;width:4px;background:var(--grad)}
+#list>.band:first-child,.gh+.band{margin-top:0}
+.pg{position:absolute;left:0;right:0;bottom:-1px;height:2px}
+.pg i{display:block;height:100%;width:0;background:var(--b2);opacity:.55;transition:width .8s var(--ease)}
+.gh{display:flex;align-items:baseline;gap:10px;padding:34px 16px 12px;font-feature-settings:"palt"}
+#list>.gh:first-child{padding-top:10px}
+.gh span{font-size:20px;font-weight:800;letter-spacing:.02em}
+.gh span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--or);margin-right:9px;vertical-align:3px}
+.gh small{font-size:12px;color:var(--sub)}
 .ic{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#fff;border:1.5px solid var(--b2);color:var(--b1);font-size:13px;font-weight:700;flex:none}
 .bn{flex:1;min-width:0;font-size:15px;font-weight:700;font-feature-settings:"palt"}
 .bn small{font-size:11px;font-weight:500;color:var(--sub);margin-right:6px}
@@ -103,7 +114,10 @@ h1 .bulb{width:22px;height:22px;margin-top:-4px;flex:none}
 .ch{display:flex;align-items:flex-start;gap:10px;width:100%;padding:10px 0;text-align:left;border-top:1px solid var(--line);font-size:14.5px;line-height:1.6;transition:color .3s,opacity .3s}
 .chs li:first-child .ch{border-top:0}
 .cn{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;border:1.5px solid #CCD3E2;font-size:12px;font-weight:700;color:var(--sub);flex:none;transition:all .3s}
-.ch:active .cn{border-color:var(--b2)}
+.ch:active .cn{border-color:var(--b2);transform:scale(.9)}
+.ch.is-ok .cn,.ch.is-ng .cn{animation:pop .45s var(--ease)}
+.mk.ok::before,.mk.ng::before{display:inline-block;animation:pop .4s var(--ease)}
+.res-in{animation:up .55s var(--ease) both}
 .done .ch{cursor:default;opacity:.45}
 .done .ch.is-ok,.done .ch.is-ng{opacity:1}
 .ch.is-ok{color:var(--b1);font-weight:700}
@@ -132,6 +146,17 @@ h1 .bulb{width:22px;height:22px;margin-top:-4px;flex:none}
 .empty .ic{margin:0 auto 10px;width:40px;height:40px;font-size:18px}
 .note{padding:22px 20px 0;font-size:11.5px;line-height:1.7;color:var(--faint);text-align:center}
 .clear{display:block;margin:14px auto 0;font-size:12px;color:var(--faint);text-decoration:underline;text-underline-offset:3px}
+
+/* motion */
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.6)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes glow{0%,100%{opacity:1}40%{opacity:.35}60%{opacity:1}75%{opacity:.6}}
+.hero>*{animation:up .8s var(--ease) both}
+.hero .eyebrow{animation-delay:.05s}.hero h1{animation-delay:.14s}.hero .lead{animation-delay:.24s}.hero .flow{animation-delay:.34s}
+h1 .bulb{animation:glow 1.6s ease 1.1s 1 both}
+.anim .rv{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .6s var(--ease)}
+.anim .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 
 /* footer */
 .ft{padding:36px 16px calc(36px + env(safe-area-inset-bottom));text-align:center;font-size:11.5px;color:var(--faint)}
@@ -209,6 +234,7 @@ const F=[
 {"id":"p12","g":"p","k":"生","name":"生殖・老化","q":[["排卵を引き起こすホルモンはどれか。",["卵胞刺激ホルモン(FSH)","プロゲステロン","黄体形成ホルモン(LH)","オキシトシン"],2,"下垂体前葉からLHが急に多く出る(LHサージ)ことで排卵が起こる。",["FSHは卵胞の発育を促す。","プロゲステロンは排卵後の黄体から出る。","","オキシトシンは子宮の収縮や射乳に働く。"]],["排卵後に基礎体温を上げるホルモンはどれか。",["エストロゲン","プロラクチン","FSH","プロゲステロン"],3,"黄体から出るプロゲステロン(黄体ホルモン)が体温を上げ、高温期になる。",["エストロゲンに体温を上げる働きはない。","プロラクチンは乳汁の産生を促す。","FSHは卵胞の発育を促す。",""]],["精巣で男性ホルモン(テストステロン)を分泌する細胞はどれか。",["セルトリ細胞","顆粒膜細胞","精祖細胞","ライディッヒ細胞(間質細胞)"],3,"精細管の間にあるライディッヒ細胞がテストステロンを分泌する。",["セルトリ細胞は精子の形成を支える。","顆粒膜細胞は卵巣の卵胞にある。","精祖細胞は精子のもとになる細胞。",""]],["男性の性染色体の組み合わせはどれか。",["XX","XO","YY","XY"],3,"ヒトの染色体は46本。性染色体は男性がXY、女性がXX。",["XXは女性。","XOはターナー症候群でみられる。","YYだけの組み合わせはない。",""]],["加齢による変化として正しいのはどれか。",["残気量が減る","肺活量が減る","収縮期血圧が下がる","基礎代謝が上がる"],1,"加齢で肺の弾力や呼吸筋の力が落ち、肺活量は減る。",["残気量は増える。","","動脈が硬くなり、収縮期血圧は上がる。","基礎代謝は下がる。"]],["月経周期の平均的な長さはどれか。",["約14日","約21日","約28日","約40日"],2,"月経周期は平均約28日(25〜38日程度が正常範囲)。",["約14日は排卵までの日数の目安。","約21日では短い。","","約40日では長い。"]],["月経周期が28日のとき、排卵はおよそいつ起こるか。",["月経開始から約7日目","月経開始から約28日目","月経開始から約21日目","月経開始から約14日目"],3,"排卵は次の月経の約14日前に起こる。28日周期なら月経開始から約14日目。",["約7日目では早すぎる。","約28日目は次の月経の直前。","約21日目は黄体期。",""]],["排卵後の子宮内膜の時期はどれか。",["分泌期","増殖期","月経期","閉経期"],0,"排卵後は黄体のプロゲステロンで子宮内膜が分泌期になり、着床に備える。",["","増殖期は排卵前(卵胞期)で、エストロゲンが働く。","月経期は内膜がはがれる時期。","閉経期は月経周期の時期ではない。"]],["月経が起こる直接の原因はどれか。",["FSHが減る","LHが急に増える","エストロゲンとプロゲステロンが急に減る","オキシトシンが増える"],2,"妊娠しないと黄体が退化して両ホルモンが減り、子宮内膜の機能層がはがれる。",["直接の原因ではない。","LHが急に増えると排卵が起こる。","","オキシトシンは関係しない。"]],["テストステロンの作用はどれか。",["排卵を起こす","乳汁をつくらせる","子宮内膜を増殖させる","男性の二次性徴を起こす"],3,"テストステロンは声変わり・ひげ・筋肉の発達など男性の二次性徴を起こし、精子形成も助ける。",["排卵を起こすのはLH。","乳汁をつくらせるのはプロラクチン。","子宮内膜を増殖させるのはエストロゲン。",""]],["受精卵が子宮内膜に着床するのは、受精からおよそいつか。",["約1日後","約7日後","約14日後","約28日後"],1,"受精卵は細胞分裂しながら子宮へ運ばれ、受精後約7日で着床する。",["約1日後ではまだ卵管にいる。","","約14日後では遅い。","約28日後では遅い。"]],["胎盤の働きでないものはどれか。",["母体と胎児の血液を直接まぜる","胎児に酸素と栄養を渡す","胎児の老廃物を母体へ渡す","ホルモンを分泌する"],0,"胎盤では母体と胎児の血液は直接まざらず、膜を通して物質が交換される。",["","酸素と栄養を渡すのは胎盤の働き。","老廃物を母体へ渡すのは胎盤の働き。","hCGなどのホルモンを分泌する。"]],["正常な妊娠期間(最終月経の開始日から数えて)はおよそどれか。",["約30週","約40週","約50週","約60週"],1,"妊娠期間は約40週(280日)。",["約30週では早産になる。","","約50週では長すぎる。","約60週では長すぎる。"]],["閉経後のホルモンの変化として正しいのはどれか。",["エストロゲンが増え、FSHが減る","エストロゲンが減り、FSHとLHが増える","プロゲステロンが増える","すべての性ホルモンが増える"],1,"卵巣の働きが止まりエストロゲンが減ると、負のフィードバックがなくなりFSH・LHが増える。",["エストロゲンは減り、FSHは増える。","","プロゲステロンは減る。","性ホルモンは減る。"]],["閉経後の女性に起こりやすいものはどれか。",["巨人症","クレチン症","骨粗鬆症","夜盲症"],2,"エストロゲンには骨を守る働きがあり、閉経後は骨量が減りやすい。",["巨人症は成長期の成長ホルモン過剰。","クレチン症は小児期の甲状腺ホルモン不足。","","夜盲症はビタミンA不足。"]],["子どもの性別を決めるものはどれか。",["精子がもつ性染色体","卵子がもつ性染色体","母親のホルモン","受精する場所"],0,"卵子はすべてX、精子はXかYをもつので、受精した精子の性染色体で性別が決まる。",["","卵子はすべてXをもつので、性別を決めない。","母親のホルモンでは決まらない。","受精する場所では決まらない。"]],["女性の二次性徴を起こす主なホルモンはどれか。",["プロラクチン","テストステロン","エストロゲン","オキシトシン"],2,"エストロゲンは乳房の発達や女性らしい体つきなどの二次性徴を起こす。",["プロラクチンは乳汁の産生。","テストステロンは男性の二次性徴。","","オキシトシンは射乳と子宮の収縮。"]],["授乳中に月経が戻りにくいことに主に関わるホルモンはどれか。",["テストステロン","オキシトシン","プロラクチン","カルシトニン"],2,"授乳でプロラクチンが多く出ると、性腺刺激ホルモンの分泌がおさえられ、排卵が起こりにくくなる。",["テストステロンは男性ホルモン。","オキシトシンは射乳に働く。","","カルシトニンは血中カルシウムを下げる。"]],["年をとると起こる変化として正しいのはどれか。",["腎血流量が増える","骨量が減る","最大心拍数が増える","低い音から聞こえにくくなる"],1,"年をとると骨量が減り、骨折しやすくなる。",["腎血流量は減る。","","最大心拍数は減る。","高い音から聞こえにくくなる。"]],["年をとると、まず聞こえにくくなる音はどれか。",["低い音","高い音","大きい音","すべての音が同時に"],1,"加齢による難聴(老人性難聴)は高い音から始まる。",["低い音は比較的保たれる。","","大きさではなく、音の高さで差が出る。","高い音から始まる。"]],["高齢者で、体重に占める割合が減るものはどれか。",["体脂肪","体内の水分","結合組織","特に変化はない"],1,"高齢者は細胞内液が減り、体重に占める水分の割合が少なくなるため、脱水になりやすい。",["体脂肪の割合はむしろ増えやすい。","","主な変化ではない。","変化がある。"]],["加齢によって最大心拍数はどう変わるか。",["増える","減る","変わらない","子どもより増える"],1,"最大心拍数は年齢とともに下がる(目安は220−年齢)。",["増えない。","","変わる。","子どもより多くはならない。"]],["加齢によって糸球体ろ過量はどう変わるか。",["低下する","増加する","変わらない","一時的に増えてから元に戻る"],0,"年をとると腎臓の働きは低下し、糸球体ろ過量も減る。薬が体に残りやすくなる。",["","増加しない。","変わる。","正しくない。"]],["高齢者に脱水が起こりやすい理由として正しいのはどれか。",["汗をかかない","のどの渇きを感じにくい","尿が濃くなりすぎる","水を吸収できない"],1,"高齢者はのどの渇きを感じにくく、体内の水分も少ないため脱水になりやすい。",["汗はかく。","","むしろ尿を濃くする力が落ちる。","水は吸収できる。"]],["細胞分裂のたびに短くなり、老化に関わる染色体の末端の部分はどれか。",["ミトコンドリア","セントロメア","リボソーム","テロメア"],3,"テロメアは細胞分裂のたびに短くなり、一定より短くなると細胞は分裂できなくなる。",["ミトコンドリアはATPをつくる。","セントロメアは染色体の中央付近のくびれ。","リボソームはたんぱく質を合成する。",""]],["加齢によって筋の量と筋力が減る状態はどれか。",["廃用性萎縮だけ","骨粗鬆症","サルコペニア","筋ジストロフィー"],2,"サルコペニアは加齢による筋量・筋力の低下で、転倒や要介護の原因になる。",["廃用性萎縮は使わないことによる萎縮で、加齢そのものによる状態の名前ではない。","骨粗鬆症は骨量の減少。","","筋ジストロフィーは遺伝性の病気。"]],["勃起を起こす自律神経はどれか。",["迷走神経","交感神経","体性運動神経","副交感神経"],3,"勃起は副交感神経(骨盤内臓神経)、射精は主に交感神経の働きで起こる。",["迷走神経は骨盤内の生殖器を支配しない。","交感神経は主に射精に働く。","自律神経の働き。",""]],["基礎体温が二相性(低温期と高温期)にならないのはどのようなときか。",["排卵がないとき","妊娠初期","正常な月経周期","黄体期"],0,"排卵がないと黄体ができず、プロゲステロンによる高温期が現れない。",["","妊娠初期は高温期が続く。","正常では二相性になる。","黄体期は高温期。"]],["精子の頭部の先端にあり、卵子に入るための酵素を含む構造はどれか。",["尾部","中片","先体","核膜孔"],2,"先体には卵子の周りの層を溶かす酵素が含まれる。",["尾部(べん毛)は精子を泳がせる。","中片にはミトコンドリアがあり、運動のエネルギーをつくる。","","核膜孔は核の膜の孔で、この構造ではない。"]],["精子の運動のエネルギーをつくるミトコンドリアがある部分はどれか。",["中片","先体","頭部の核","尾部の先端"],0,"精子の中片にはミトコンドリアがらせん状に並び、ATPをつくる。",["","先体は卵子に入るための酵素を含む。","核には遺伝情報(DNA)がある。","尾部の先端にミトコンドリアは集まっていない。"]]]}];
 
 const GN={a:'解剖学',p:'生理学'};
+if(!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)&&'IntersectionObserver' in window)document.documentElement.classList.add('anim');
 const Q={};
 F.forEach(f=>{f.ids=f.q.map((x,i)=>{const id=f.id+'-'+(i+1);Q[id]={id,f,t:x[0],c:x[1],a:x[2],e:x[3],n:x[4]};return id;});});
 
@@ -260,14 +286,31 @@ function render(){
     list.innerHTML='<div class="empty"><div class="ic">○</div>まちがえた問題はありません。</div>';
   }else{
     const showG=tab==='all'||tab==='w';
+    let lastG=null;
     list.innerHTML=groups.map(({f,ids})=>{
+      let gh='';
+      if(showG&&f.g!==lastG){lastG=f.g;const gs=groups.filter(x=>x.f.g===f.g);
+        gh='<div class="gh rv"><span>'+GN[f.g]+'</span><small>'+gs.length+'分野・'+gs.reduce((a,x)=>a+x.ids.length,0)+'問</small></div>';}
       const rows=ids.map((id,i)=>{seq.push(id);const r=rec[id];
-        return '<div class="item" id="it-'+id+'"><button class="row" data-id="'+id+'" aria-expanded="false"><span class="num">'+(i+1)+'</span><span class="qt">'+Q[id].t+'</span><span class="mk'+(r?(r.r?' ok':' ng'):'')+'"></span><span class="chev"></span></button><div class="body" hidden><div class="inner"></div></div></div>';
+        return '<div class="item rv" id="it-'+id+'"><button class="row" data-id="'+id+'" aria-expanded="false"><span class="num">'+(i+1)+'</span><span class="qt">'+Q[id].t+'</span><span class="mk'+(r?(r.r?' ok':' ng'):'')+'"></span><span class="chev"></span></button><div class="body" hidden><div class="inner"></div></div></div>';
       }).join('');
-      return '<div class="band"><span class="ic">'+f.k+'</span><span class="bn">'+(showG?'<small>'+GN[f.g]+'</small>':'')+f.name+'</span><span class="cnt">'+ids.length+'問</span>'+bandRate(f)+'</div>'+rows;
+      return gh+'<div class="band rv" data-bf="'+f.id+'"><span class="ic">'+f.k+'</span><span class="bn">'+f.name+'</span><span class="cnt">'+ids.length+'問</span>'+bandRate(f)+'<span class="pg"><i data-w="'+prog(f)+'"></i></span></div>'+rows;
     }).join('');
   }
   renderSum();
+  observe();
+}
+function prog(f){return Math.round(stat(f.ids).n/f.ids.length*100);}
+let io=null;
+function observe(){
+  const els=list.querySelectorAll('.rv,.pg i');
+  if(!document.documentElement.classList.contains('anim')){els.forEach(e=>{e.classList.add('in');if(e.dataset.w)e.style.width=e.dataset.w+'%';});return;}
+  if(io)io.disconnect();
+  io=new IntersectionObserver(es=>{let k=0;es.forEach(e=>{if(!e.isIntersecting)return;const t=e.target;
+    if(t.dataset.w!==undefined){setTimeout(()=>t.style.width=t.dataset.w+'%',300);}
+    else{t.style.transitionDelay=Math.min(k++,8)*40+'ms';t.classList.add('in');setTimeout(()=>t.style.transitionDelay='',900);}
+    io.unobserve(t);});},{rootMargin:'0px 0px -5% 0px'});
+  els.forEach(e=>io.observe(e));
 }
 
 /* 高さアニメーション(押した要素だけを動かす) */
@@ -348,6 +391,7 @@ function answer(id,k){
   it.querySelector('.mk').className='mk '+(ok?'ok':'ng');
   const r=list.querySelector('[data-rf="'+q.f.id+'"]');
   if(r){const st=stat(q.f.ids);r.textContent='正答率 '+pct(st);r.classList.remove('none');}
+  const pg=list.querySelector('[data-bf="'+q.f.id+'"] .pg i');if(pg){pg.dataset.w=prog(q.f);pg.style.width=pg.dataset.w+'%';}
   renderSum();
 }
 function goNext(id){
