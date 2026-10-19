@@ -135,8 +135,6 @@ h1 .bulb{width:22px;height:22px;margin-top:-4px;flex:none}
 
 /* footer */
 .ft{padding:36px 16px calc(36px + env(safe-area-inset-bottom));text-align:center;font-size:11.5px;color:var(--faint)}
-.ft .logo{display:inline-block;font-weight:800;letter-spacing:.18em;font-size:15px;color:#9AA1B2;margin-bottom:6px}
-.ft a{color:var(--faint);text-decoration:none}
 
 /* to top */
 .top{position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:30;width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid var(--line);box-shadow:0 4px 14px rgba(27,37,64,.12);display:grid;place-items:center;opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .3s,transform .3s var(--ease)}
@@ -180,10 +178,7 @@ h1 .bulb{width:22px;height:22px;margin-top:-4px;flex:none}
   <button class="clear" id="clear">記録を消す</button>
 </main>
 
-<footer class="ft">
-  <div class="logo">LIS</div><br>
-  © 2026 <a href="https://www.e-lis.jp" target="_blank" rel="noopener">株式会社LIS</a>
-</footer>
+<footer class="ft"></footer>
 <button class="top" id="top" aria-label="上へ戻る"></button>
 
 <script>
